@@ -190,6 +190,49 @@ void showScreen()
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	cout << "Your score is:" << score << endl;
 }
+
+void pipes()
+{
+	if (gameTime == 8)
+	{
+		pipeHole = 5 + (rand() % 12);
+		for (line = 1; line < 24; line++)
+		{
+			map[line][78] = 221;
+			checkPipes[line][78] = 1;
+		}
+		map[pipeHole][78] = 0;
+		map[pipeHole - 1][78] = 0;
+		map[pipeHole + 1][78] = 0;
+		gameTime = 0;
+		goto movPipe;
+	}
+	else goto movPipe;
+movPipe:
+	{    gameTime++;
+	for (line = 1; line < 24; line++)
+	{
+		for (column = 1; column < 79; column++)
+		{
+			if (map[line][column] == 221)
+			{
+				if (column > 1)
+				{
+					map[line][column - 1] = 221;
+					checkPipes[line][column - 1] = 1;
+					map[line][column] = 0;
+					checkPipes[line][column] = 0;
+				}
+				if (column == 1)
+				{
+					map[line][column] = 0;
+					checkPipes[line][column] = 0;
+				}
+			}
+		}
+	}
+	}
+}
 void main()
 {
 	createScreen();
