@@ -38,6 +38,7 @@ bool gameOver();
 void checkScore();
 void menu();
 void endGame();
+void resetScreen();
 
 void drawLogo()
 {
@@ -84,7 +85,7 @@ void createScreen()
 		map[line][79] = 223;
 	}
 
-	map[10][5] = 157;
+	map[10][6] = 157;
 	column = 20;
 	while (column < 78)
 	{
@@ -102,6 +103,19 @@ void createScreen()
 		checkPipes[pipeHole - 1][column] = 0;
 		column += 10;
 	}
+}
+ 
+void resetScreen()
+{
+	birdLine = 0;
+	birdColumn = 0;
+	for (line = 0; line < 25; line++)
+		for (column = 0; column < 80; column++)
+		{
+			checkPipes[line][column] = 0;
+			map[line][column] = 0;
+		}
+	createScreen();
 }
 
 void showScreen()
@@ -375,11 +389,22 @@ void endGame()
 	cout << "" << endl << endl;
 	cout << "                        Y O U R   S C O R E : " << score << endl << endl;
 	cout << "                        H I G H   S C O R E : " << highscore;
+	cout << endl << endl << endl;
+
+	cout << "      Do you want to play again? [Y/N]";
+	cin >> choice;
+	if (choice == 'y')
+	{
+		system("cls");
+		resetScreen();
+		score = 0;
+		game();
+	}
+	else return;
 }
 
 void game()
 {
-	showScreen();
 	while (true)
 	{
 		Sleep(150);
