@@ -68,7 +68,6 @@ void drawLogo()
 
 }
 
-
 void createScreen()
 {
 	system("cls");
@@ -104,7 +103,6 @@ void createScreen()
 		column += 10;
 	}
 }
-
 
 void showScreen()
 {
@@ -206,7 +204,6 @@ void movBird()
 	}
 }
 
-
 void pipes()
 {
 	if (repeatLoop == 10)
@@ -273,10 +270,6 @@ bool gameOver()
 	return false;
 }
 
-
-
-
-
 void menu()
 {
 	cout << endl << endl;
@@ -297,13 +290,18 @@ void menu()
 		case '2':
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 			system("cls");
+			cout << endl << endl<<endl;
+			cout << "                *       *       *       *       *       " << endl;
+			cout << "                            I N S T R U C T I O N S: " << endl;
+			cout << "                    *       *       *       *        *       * " << endl;
 			cout << endl << endl;
-			cout << "                Press any key to make bird fly.          " << endl;
-			cout << "        Fly through the holes between the pipes.         " << endl;
-			cout << "      When you pass through the hole,you get 1 point.    " << endl;
-			cout << "            Try to pass as much as you can.              " << endl;
-			cout << "       But be careful, don't hit the pipes or the ground!" << endl << endl;
-			cout << endl << endl;
+
+			cout << "              * Press any key to make bird fly.          " << endl;
+			cout << "              * Fly through the holes between the pipes.         " << endl;
+			cout << "              * When you pass through the hole,you get 1 point.    " << endl;
+			cout << "              * Try to pass as much as you can.              " << endl;
+			cout << "              * But be careful, don't hit the pipes or the ground!" << endl << endl;
+			cout << endl << endl << endl;
 			cout << "       Do you want o return to menu?[Y/N]" << endl;
 			cin >> choice;
 			if (choice == 'y')
@@ -315,8 +313,8 @@ void menu()
 			break;
 		case'3':
 			system("cls");
-			cout << endl << endl << endl;
-			cout << "              The best score is: " << highscore;
+			cout << endl << endl << endl << endl << endl << endl;
+			cout << "                THE  BEST  SCORE : " << highscore;
 			cout << endl << endl;
 			cout << "              Return to main?[Y/N]" << endl;
 			cin >> choice;
@@ -379,14 +377,12 @@ void endGame()
 	cout << "                        H I G H   S C O R E : " << highscore;
 }
 
-
 void game()
 {
-	createScreen();
 	showScreen();
 	while (true)
 	{
-		Sleep(200);
+		Sleep(150);
 		choice = '*';
 		if (_kbhit())
 		{
@@ -394,11 +390,10 @@ void game()
 			if (choice != '*')
 				mov = 1;
 		}
-
 		movBird();
 		checkScore();
 		if (gameOver() == true)
-			goto end;
+		 goto end;
 		pipes();
 		if (score > highscore)
 			highscore = score;
@@ -412,9 +407,9 @@ end:
 	endGame();
 }
 
-
 void main()
 {
+	createScreen();
 	system("cls");
 	cout << endl << endl;
 	drawLogo();
