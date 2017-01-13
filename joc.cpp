@@ -1,11 +1,10 @@
 #include<iostream>
 #include<Windows.h>
 #include<conio.h>
-#include<stdio.h>
 #include<string.h>
 #include<cstdlib>
 #include<fstream>
-#include<iomanip>
+
 using namespace std;
 
 ifstream inputFile;
@@ -16,18 +15,18 @@ bool error;
 int line, column, score, mov = 0, repeatLoop = 5, birdColumn, birdLine, birdTime, pipeHole;
 int map[25][80];
 int checkPipes[25][80];
-int logo[10][42] =
+int logo[10][50] =
 {
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-	{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-	{ 1, 0, 2, 2, 2, 0, 2, 0, 0, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 0, 2, 0, 0, 2, 2, 2, 0, 2, 0, 2, 2, 2, 0, 2, 2, 0, 0, 1 },
-	{ 1, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1 },
-	{ 1, 0, 2, 2, 0, 0, 2, 0, 0, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0, 0, 2, 0, 0, 0, 2, 2, 2, 0, 2, 0, 2, 2, 2, 0, 2, 0, 2, 0, 1 },
-	{ 1, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 2, 0, 0, 2, 0, 2, 0, 1 },
-	{ 1, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1 },
-	{ 1, 0, 2, 0, 0, 0, 2, 2, 2, 0, 2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2, 0, 2, 0, 2, 0, 2, 0, 2, 2, 0, 0, 1 },
-	{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+	{ 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+	{ 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+	{ 0, 0, 0, 0, 0, 0, 1, 0, 2, 2, 2, 0, 2, 0, 0, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 0, 2, 0, 0, 2, 2, 2, 0, 2, 0, 2, 2, 2, 0, 2, 2, 0, 0, 1 },
+	{ 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1 },
+	{ 0, 0, 0, 0, 0, 0, 1, 0, 2, 2, 0, 0, 2, 0, 0, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0, 0, 2, 0, 0, 0, 2, 2, 2, 0, 2, 0, 2, 2, 2, 0, 2, 0, 2, 0, 1 },
+	{ 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 2, 0, 0, 2, 0, 2, 0, 1 },
+	{ 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 1 },
+	{ 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 2, 2, 2, 0, 2, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2, 0, 2, 0, 2, 0, 2, 0, 2, 2, 0, 0, 1 },
+	{ 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+	{ 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
 };
 
 void game();
@@ -44,7 +43,7 @@ void drawLogo()
 {
 	for (int lines = 0; lines < 10; lines++)
 	{
-		for (int columns = 0; columns < 42; columns++)
+		for (int columns = 0; columns < 48; columns++)
 		{
 			switch (logo[lines][columns])
 			{
@@ -109,6 +108,9 @@ void resetScreen()
 {
 	birdLine = 0;
 	birdColumn = 0;
+	birdTime = 0;
+	repeatLoop = 5;
+	mov = 0;
 	for (line = 0; line < 25; line++)
 		for (column = 0; column < 80; column++)
 		{
@@ -222,7 +224,7 @@ void pipes()
 {
 	if (repeatLoop == 10)
 	{
-		pipeHole = 5 + (rand() % 12);
+		pipeHole = 6 + (rand() % 10);
 		for (line = 1; line < 24; line++)
 		{
 			map[line][78] = 221;
@@ -231,6 +233,9 @@ void pipes()
 		map[pipeHole][78] = 0;
 		map[pipeHole - 1][78] = 0;
 		map[pipeHole + 1][78] = 0;
+		checkPipes[pipeHole][78] = 0;
+		checkPipes[pipeHole - 1][78] = 0;
+		checkPipes[pipeHole + 1][78] = 0;
 		repeatLoop = 0;
 		goto movPipe;
 	}
@@ -276,9 +281,10 @@ void checkScore()
 
 bool gameOver()
 {
-	if ((birdLine >= 23 || birdLine <= 1))
+	if (birdLine >= 23)
 		return true;
-
+	if (birdLine <= 1)
+		return true;
 	if (checkPipes[birdLine][birdColumn]>0 && (map[birdLine][birdColumn] == 221 || map[birdLine][birdColumn] == 157))
 		return true;
 	return false;
@@ -305,15 +311,15 @@ void menu()
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 8);
 			system("cls");
 			cout << endl << endl<<endl;
-			cout << "                *       *       *       *       *       " << endl;
-			cout << "                            I N S T R U C T I O N S: " << endl;
-			cout << "                    *       *       *       *        *       * " << endl;
+			cout << "                *       *       *       *       *                 " << endl;
+			cout << "                            I N S T R U C T I O N S:              " << endl;
+			cout << "                    *       *       *       *        *       *    " << endl;
 			cout << endl << endl;
 
-			cout << "              * Press any key to make bird fly.          " << endl;
-			cout << "              * Fly through the holes between the pipes.         " << endl;
-			cout << "              * When you pass through the hole,you get 1 point.    " << endl;
-			cout << "              * Try to pass as much as you can.              " << endl;
+			cout << "              * Press any key to make bird fly.                   " << endl;
+			cout << "              * Fly through the holes between the pipes.          " << endl;
+			cout << "              * When you pass through the hole,you get 1 point.   " << endl;
+			cout << "              * Try to pass as much as you can.                   " << endl;
 			cout << "              * But be careful, don't hit the pipes or the ground!" << endl << endl;
 			cout << endl << endl << endl;
 			cout << "       Do you want o return to menu?[Y/N]" << endl;
@@ -361,6 +367,7 @@ exit:
 			menu();
 			return;
 		}
+		else exit(1);
 	}
 }
 
@@ -375,7 +382,7 @@ void endGame()
 	if (error == false)
 	{
 		outputFile.open("file.txt");
-		outputFile << highscore;
+		outputFile<<highscore;
 		outputFile.close();
 	}
 	cout << endl << endl;
@@ -391,7 +398,7 @@ void endGame()
 	cout << "                        H I G H   S C O R E : " << highscore;
 	cout << endl << endl << endl;
 
-	cout << "      Do you want to play again? [Y/N]";
+	cout << "      Do you want to play again? [Y/N]" << endl;
 	cin >> choice;
 	if (choice == 'y')
 	{
@@ -400,7 +407,7 @@ void endGame()
 		score = 0;
 		game();
 	}
-	else return;
+	else exit(1);
 }
 
 void game()
@@ -436,7 +443,7 @@ void main()
 {
 	createScreen();
 	system("cls");
-	cout << endl << endl;
+	cout << endl << endl << endl;
 	drawLogo();
 	inputFile.open("file.txt");
 	if (inputFile.is_open())
@@ -452,5 +459,4 @@ void main()
 	}
 	menu();
 	system("pause");
-
 }
